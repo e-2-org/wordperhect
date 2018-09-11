@@ -1,0 +1,79 @@
+
+
+
+<SCRIPT LANGUAGE="javascript">
+
+<!--//
+
+//if its a mac, set the value of sCSS to be the mac string
+
+if (navigator.userAgent.indexOf("Mac") != -1) { 
+
+	//alert('warning mac user !!!')
+
+	sCSS = '<LINK REL="stylesheet" TYPE="text/css" HREF="e2_mac.css">';
+
+}
+
+
+
+//if it's not a mac, set the sCSS string to be PC
+
+else {
+
+	//alert('very sensible - pc user');
+
+	sCSS = '<LINK REL="stylesheet" TYPE="text/css" HREF="e2.css">';
+
+}
+//then write that line into the header
+
+//alert(sCSS);
+
+document.write(sCSS)
+//-->
+
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript">
+
+<!--//
+
+
+
+function jon()	{
+var wid = screen.availWidth -30
+var hei = screen.availHeight -50
+
+//alert (screen.availWidth)
+//alert (screen.availHeight)
+
+strHeight = "width=" + wid + ",height=" +screen.availHeight+ ",resizeable=yes,status=no"
+//alert (strHeight);
+
+//window.open('frame.html','perhect','width='+screen.availWidth+ ' height='+screen.availHeight);
+ 
+
+var w = window.open("frame.html","perhect","toolbar=0,location=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=yes,width=" + wid + ",height=" +hei+ "");
+
+}
+
+//-->
+
+
+
+</SCRIPT>
+
+
+<TITLE>ch2</TITLE>
+</HEAD>
+<BODY>
+
+
+<a href="javascript:jon();" class="chtwo">Tomoko Takahashi - Word Perhect</a>
+
+
+
+
+</BODY>
+</HTML>
+
