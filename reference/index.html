@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Perhect (original, in Ruffle)</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    background: #fff;
+    overflow: hidden;
+}
+#perhect, ruffle-player {
+    width: 100%;
+    height: 100%;
+}
+</style>
+</head>
+<body>
+<!--
+    The original Flash movie, played by Ruffle (https://ruffle.rs), to compare
+    with the HTML port in ../port. A service worker (sw.js) stands in for the
+    original's server scripts, so loading and saving work as they did.
+-->
+<div id="perhect"></div>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+<script>
+async function start() {
+    if ('serviceWorker' in navigator) {
+        await navigator.serviceWorker.register('sw.js');
+        await navigator.serviceWorker.ready;
+        /* the first visit isn't controlled by the worker until it reloads */
+        if (!navigator.serviceWorker.controller) {
+            location.reload();
+            return;
+        }
+    }
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+        autoplay: 'on',
+        unmuteOverlay: 'hidden',
+        splashScreen: false,
+        letterbox: 'on',
+        /* the movie's requests (tips.asp, help.swf...) are made from here, where sw.js answers them */
+        base: new URL('.', location.href).href,
+    };
+    const player = window.RufflePlayer.newest().createPlayer();
+    document.getElementById('perhect').appendChild(player);
+    player.load('perhect.swf');
+}
+start();
+</script>
+</body>
+</html>

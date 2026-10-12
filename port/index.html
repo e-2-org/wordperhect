@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Perhect</title>
+<meta name="description" content="Tomoko Takahashi produced her own fully functioning online word processing programme which presents an idiosyncratic hand-drawn interface leading to a set of functioning but strangely altered tools.">
+<link rel="icon" href="../favicon.ico">
+<link rel="stylesheet" href="css/perhect.css">
+</head>
+<body>
+<main id="perhect" aria-label="Word Perhect"></main>
+<div id="print" aria-hidden="true"></div>
+<script type="module">
+import { Player } from './js/flash.js';
+import scripts from './js/scripts.js';
+import Storage from './js/storage.js';
+
+const load = name => fetch(`data/${name}.json`).then(r => r.json());
+const [perhect, help, tip] = await Promise.all(['perhect', 'help', 'tip'].map(load));
+const player = new Player(document.getElementById('perhect'), {
+    movies: { perhect, help, tip },
+    scripts,
+    server: new Storage('data/tips.txt'),
+});
+/* print: just the paper, as the original printed the paper's clip */
+player.onprint = clip => {
+    const box = clip.inner.getBBox();
+    const out = document.getElementById('print');
+    out.innerHTML = '';
+    const page = player.stage.cloneNode(false);
+    page.setAttribute('viewBox', `${box.x} ${box.y} ${box.width} ${box.height}`);
+    page.append(player.defs.cloneNode(true), clip.inner.cloneNode(true));
+    page.lastChild.removeAttribute('transform');
+    out.appendChild(page);
+    print();
+};
+/* quit: the original closed its window */
+player.onquit = () => window.close();
+window.player = player;
+</script>
+</body>
+</html>
