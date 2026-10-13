@@ -32,6 +32,16 @@ player.onprint = clip => {
     page.setAttribute('viewBox', `${box.x} ${box.y} ${box.width} ${box.height}`);
     page.append(player.defs.cloneNode(true), clip.inner.cloneNode(true));
     page.lastChild.removeAttribute('transform');
+    /* the copy needs its own ids: url(#…) and href="#…" find the first match in the
+       document, which is in the stage, hidden when printing, and browsers don't draw
+       patterns (the scanned papers) from a hidden tree */
+    page.querySelectorAll('[id]').forEach(el => el.id = 'print-' + el.id);
+    page.querySelectorAll('*').forEach(el => {
+        for (const attr of el.attributes) {
+            if (attr.value.includes('url(#')) attr.value = attr.value.replaceAll('url(#', 'url(#print-');
+            else if (/^(xlink:)?href$/.test(attr.name) && attr.value.startsWith('#')) attr.value = '#print-' + attr.value.slice(1);
+        }
+    });
     out.appendChild(page);
     print();
 };
