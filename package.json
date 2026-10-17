@@ -1,0 +1,11 @@
+{
+  "name": "wordperhect",
+  "private": true,
+  "description": "Word Perhect by Tomoko Takahashi and Jon Pollard: the HTML port and its tests",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/*.test.js"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
